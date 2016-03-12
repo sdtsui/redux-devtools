@@ -6,13 +6,20 @@ import DevTools from '../containers/DevTools';
 
 const enhancer = compose(
   applyMiddleware(thunk),
-  DevTools.instrument(),
-  persistState(
-    window.location.href.match(
-      /[?&]debug_session=([^&#]+)\b/
-    )
-  )
+  // DevTools.instrument(),
+  // persistState(
+  //   window.location.href.match(
+  //     /[?&]debug_session=([^&#]+)\b/
+  //   )
+  // ),
+  window.devToolsExtension ? window.devToolsExtension() : f => f
 );
+
+// const finalCreateStore = compose(
+//   applyMiddleware(thunk),
+//   ...
+//   window.devToolsExtension ? window.devToolsExtension() : f => f
+// )(createStore);
 
 export default function configureStore(initialState) {
   const store = createStore(rootReducer, initialState, enhancer);
